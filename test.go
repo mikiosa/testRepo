@@ -1,13 +1,11 @@
 package main
 
 import (
-	"database/sql"
-	_ "github.com/mattn/go-sqlite3"
 	"fmt"
 	"log"
+	"database/sql"
+	_ "github.com/mattn/go-sqlite3"
 )
-
-var DbConnection *sql.DB
 
 func main() {
 	db, _ :=sql.Open("sqlite3","/var/tmp/testDb")
@@ -15,7 +13,7 @@ func main() {
 
 	rows, err := db.Query("SELECT col1, col2 FROM tb1")
 	if err != nil {
-		log.Fatal("aaaa:", err)
+		log.Fatal("query error:", err)
 	}
 	defer rows.Close()
 	for rows.Next() {
@@ -24,7 +22,7 @@ func main() {
 		if err := rows.Scan(&c1, &c2); err != nil {
 			log.Fatal(err)
 		}
-		fmt.Println("%d %s", c1, c2)
+		fmt.Println(c1, c2)
 	}
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
